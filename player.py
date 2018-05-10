@@ -16,6 +16,7 @@ class Player(pg.sprite.Sprite):
         self.pos = vec(WIDTH / 2,HEIGHT / 2)
         self.vel = vec(0,0)
         self.acc = vec(0,0)
+        self.canJump = False
 
     def move(self):
         self.acc.x += self.vel.x * PLAYER_FRICTION
@@ -23,6 +24,7 @@ class Player(pg.sprite.Sprite):
         self.pos += self.vel + 0.5 * self.acc
 
         self.rect.midbottom = self.pos
+        
 
     def update(self):
         self.acc = vec(0,PLAYER_GRAV)
@@ -40,9 +42,11 @@ class Player(pg.sprite.Sprite):
         self.move()
         self.limites()
 
+        print(self.pos)
+
     def jump(self):
-        player_hit = pg.sprite.spritecollide(self, self.game.platforms_sprite,False)
-        if player_hit:
+        #player_hit = pg.sprite.spritecollide(self, self.game.platforms_sprite,False)
+        if self.canJump:
             self.vel.y = -PLAYER_JUMP
 
     def limites(self):
@@ -108,8 +112,8 @@ class Head(pg.sprite.Sprite):
         self.pressWait()
 
     def teleport(self):
-        self.isOn = True
         self.game.player.pos = self.pos
+        self.isOn = True
 
 
     def mouse_loc(self):

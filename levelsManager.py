@@ -30,15 +30,10 @@ class Lvl0:
             self.all_sprites.add(self.ground)
             self.platforms_sprite.add(self.ground)
 
-        self.porte = sprites.Porte(2*WIDTH/3 + 200, HEIGHT/2 -100,self)
+        self.porte = sprites.Porte(600,600,self)
         self.all_sprites.add(self.porte)
 
         
-        self.lasers = [(40, HEIGHT -140, 50, 5, self)]
-
-        for l in self.lasers:
-            self.laser = sprites.Laser_horiz(l[0], l[1], l[2], l[3], self)
-            self.all_sprites.add(self.laser)
 
 
 

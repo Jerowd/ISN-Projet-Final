@@ -69,35 +69,22 @@ class Game:
 
     def applyCollision(self):
         #collision
+        """
         player_hit = pg.sprite.spritecollide(self.player, self.platforms_sprite, False)
         if player_hit:
             self.player.pos.y = player_hit[0].rect.top
             self.player.vel.y = 0
+        """
+
+        """
 
         if self.head.isOn == False:
             head_hit = pg.sprite.spritecollide(self.head, self.platforms_sprite, False)
             if head_hit:
                 self.head.pos.y = head_hit[0].rect.top
                 self.head.vel.y = 0
+        """
 
-        if self.player.pos.x < 50:
-            self.player.pos.x = 50
-        elif self.player.pos.x > 1230:
-            self.player.pos.x = 1230
-        elif self.player.pos.y < 50:
-            self.player.pos.y = 50
-        elif self.head.rect.y < 50:
-            self.head.vel.y = 0
-        elif self.head.rect.x < 50:
-            self.head.vel.x = 0
-        elif self.head.rect.x > 1200:
-            self.head.vel.x = 0
-
-        if self.scene.currentLevel == 0:
-            if self.player.pos.x > 2*WIDTH/3 - 10:
-                self.player.x = 2*WIDTH/3 - 10
-                
-                
   
 
 
