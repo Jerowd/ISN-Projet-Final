@@ -1,5 +1,6 @@
 import pygame as pg
 from settings import *
+
 vec = pg.math.Vector2
 
 class Player(pg.sprite.Sprite):
@@ -12,11 +13,10 @@ class Player(pg.sprite.Sprite):
         self.image = pg.Surface((self.w,self.h))
         self.image.fill(BLACK)
         self.rect = self.image.get_rect()
-        self.rect.center = (WIDTH / 2, HEIGHT / 2)
-        self.pos = vec(WIDTH / 2,HEIGHT / 2)
+        self.rect.center = (640, 360)
+        self.pos = vec(640,360)
         self.vel = vec(0,0)
         self.acc = vec(0,0)
-        self.canJump = False
 
     def move(self):
         self.acc.x += self.vel.x * PLAYER_FRICTION
@@ -24,7 +24,6 @@ class Player(pg.sprite.Sprite):
         self.pos += self.vel + 0.5 * self.acc
 
         self.rect.midbottom = self.pos
-        
 
     def update(self):
         self.acc = vec(0,PLAYER_GRAV)
@@ -42,25 +41,22 @@ class Player(pg.sprite.Sprite):
         self.move()
         self.limites()
 
-        print(self.pos)
-
     def jump(self):
-        #player_hit = pg.sprite.spritecollide(self, self.game.platforms_sprite,False)
-        if self.canJump:
+        player_hit = pg.sprite.spritecollide(self, self.game.platforms_sprite,False)
+        if player_hit:
             self.vel.y = -PLAYER_JUMP
 
     def limites(self):
-        if self.pos.y > HEIGHT:
+        if self.pos.y > 720:
             self.game.new()
 
-        if self.pos.x > WIDTH:
+        if self.pos.x > 1280:
             self.pos.x = 0
         elif self.pos.x < 0:
-            self.pos.x = WIDTH
+            self.pos.x = 1280
 
         if self.pos.y - self.h < 0:
             self.pos.y = self.h
-
 
 class Head(pg.sprite.Sprite):
     def __init__(self, game):
@@ -89,18 +85,14 @@ class Head(pg.sprite.Sprite):
         self.acc = vec(0,PLAYER_GRAV * 3) #gravitÃƒÂ© pour que le personnage tombe
         keys = pg.key.get_pressed()
 
-
         if keys[pg.K_e] and self.isOn and self.press:
             self.isOn = False
             self.mouse_loc()
             self.press = False
 
-
         elif keys[pg.K_q] and self.isOn == False and self.press:
             self.teleport()
             self.press = False
-
-
 
         if self.isOn:
             self.on()
@@ -112,9 +104,8 @@ class Head(pg.sprite.Sprite):
         self.pressWait()
 
     def teleport(self):
-        self.game.player.pos = self.pos
         self.isOn = True
-
+        self.game.player.pos = self.pos
 
     def mouse_loc(self):
         #dÃƒÂ©tecte la position de la souris et permet de tirer la tÃƒÂªte
@@ -148,12 +139,3 @@ class Head(pg.sprite.Sprite):
 
     def debug(self):
         pass
-
-
-
-
-
-
-
-
-

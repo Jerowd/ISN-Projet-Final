@@ -10,7 +10,7 @@ class Game:
     def __init__(self):
         pg.init()
         pg.mixer.init()
-        self.screen = pg.display.set_mode((WIDTH,HEIGHT))
+        self.screen = pg.display.set_mode((1280,720))
         pg.display.set_caption(TITRE)
         self.clock = pg.time.Clock()
         self.running = True
@@ -20,19 +20,18 @@ class Game:
         self.lvl0 = Lvl0
         self.lvl1 = Lvl1
 
-
     def spawnObjects(self):
-        #crÃƒÂ©ation des groupes de sprites
+        #crÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©ation des groupes de sprites
         self.all_sprites = pg.sprite.Group()
         self.player_sprite = pg.sprite.Group()
         self.platforms_sprite = pg.sprite.Group()
 
-        #crÃƒÂ©ation du joueur
+        #crÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©ation du joueur
         self.player = Player(self)
         self.all_sprites.add(self.player)
         self.player_sprite.add(self.player)
 
-        #crÃƒÂ©ation de la tÃƒÂªte
+        #crÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©ation de la tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªte
         self.head = Head(self)
         self.all_sprites.add(self.head)
         self.player_sprite.add(self.head)
@@ -42,13 +41,10 @@ class Game:
         else:
             self.lvl1.start(self)
 
-
-
     def new(self):
         self.spawnObjects()
         self.scene.SpawnDefaultWalls(self)
         self.run()
-
 
     def run(self):
         self.playing = True
@@ -66,28 +62,35 @@ class Game:
         #print("x: " + str(self.player.pos.x))
         #print("y: " + str(self.player.pos.y))
 
-
     def applyCollision(self):
         #collision
-        """
         player_hit = pg.sprite.spritecollide(self.player, self.platforms_sprite, False)
         if player_hit:
             self.player.pos.y = player_hit[0].rect.top
             self.player.vel.y = 0
-        """
-
-        """
 
         if self.head.isOn == False:
             head_hit = pg.sprite.spritecollide(self.head, self.platforms_sprite, False)
             if head_hit:
                 self.head.pos.y = head_hit[0].rect.top
                 self.head.vel.y = 0
-        """
 
-  
+        if self.player.pos.x < 50:
+            self.player.pos.x = 50
+        elif self.player.pos.x > 1230:
+            self.player.pos.x = 1230
+        elif self.player.pos.y < 50:
+            self.player.pos.y = 50
+        elif self.head.rect.y < 50:
+            self.head.vel.y = 0
+        elif self.head.rect.x < 50:
+            self.head.vel.x = 0
+        elif self.head.rect.x > 1200:
+            self.head.vel.x = 0
 
-
+        if self.scene.currentLevel == 0:
+            if self.player.pos.x > 845:
+                self.player.x = 845
 
     def events(self):
         for event in pg.event.get():
@@ -98,7 +101,6 @@ class Game:
                 self.running = False
                 pg.quit()
                 sys.exit()
-
 
     def draw(self):
         self.screen.fill(WHITE)
