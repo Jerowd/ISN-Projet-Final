@@ -66,8 +66,11 @@ class Game:
             self.lateUpdate()
 
     def lateUpdate(self):
+        """
         self.head.pos = self.head.rect.midbottom
         self.player.pos = self.player.rect.midbottom
+        """
+        pass
 
     def update(self):
         self.all_sprites.update()
@@ -91,17 +94,28 @@ class Game:
 
         if self.head.isOn:
             self.on()
-            self.head.image.fill(RED)
+            self.head.image.fill(GREEN)
         else:
-            self.head.notOn()   
+            self.notOn()   
             self.head.image.fill(RED)
 
         self.head.pressWait()
+
+        #application de la collision sur la tete
 
         #tete sur le corps si isnotOn
     def on(self):
         self.head.rect.midbottom = self.player.rect.midtop
         self.head.pos = self.head.rect.midbottom
+
+    def notOn(self):
+        #permet au corps d'ÃƒÂªtre soumis ÃƒÂ  la gravitÃƒÂ© quand elle n'est pas au-dessus du corps
+        self.head.acc += self.head.vel * PLAYER_FRICTION
+        self.head.vel += self.head.acc
+        self.head.pos += self.head.vel + 0.5 * self.head.acc
+
+        self.head.rect.midbottom = self.head.pos
+
 
 
     def teleport(self):
@@ -132,8 +146,16 @@ class Game:
         print(self.head.rect)
         print(self.head.pos)
         print(" ")
-        """
+    
         print(self.player.vel)
+    
+        print(self.player.rect)
+        print(self.player.pos)
+        print(" ")
+        """
+
+        print(self.player.rect.bottom)
+
 
 gameInstance = Game()
 while gameInstance.running:

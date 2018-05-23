@@ -72,7 +72,7 @@ class Player_collision(pg.sprite.Sprite):
         self.w = 20
         self.h = 30
         self.image = pg.Surface((self.w, self.h))
-        self.image.fill(GREEN)
+        self.image.set_alpha(0)
         self.rect = self.image.get_rect()
 
     def update(self):
@@ -85,7 +85,7 @@ class Head_collision(pg.sprite.Sprite):
         self.w = 22
         self.h = 26
         self.image = pg.Surface((self.w, self.h))
-        self.image.fill(PINK)
+        self.image.set_alpha(0)
         self.rect = self.image.get_rect()
     def update(self):
         self.rect.midbottom = self.game.head.pos 
@@ -132,13 +132,7 @@ class Head(pg.sprite.Sprite):
             self.timer = COOLDOWN_HEAD 
             self.press = True
 
-    def notOn(self):
-        #permet au corps d'ÃƒÂªtre soumis ÃƒÂ  la gravitÃƒÂ© quand elle n'est pas au-dessus du corps
-        self.acc += self.vel * PLAYER_FRICTION
-        self.vel += self.acc
-        self.pos += self.vel + 0.5 * self.acc
-
-        self.rect.midbottom = self.pos
+  
 
 
 
