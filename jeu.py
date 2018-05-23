@@ -27,6 +27,11 @@ class Game:
         self.player_sprite = pg.sprite.Group()
         self.platforms_sprite = pg.sprite.Group()
 
+        if self.scene.currentLevel == 0:
+            self.lvl0.start(self)
+        else:
+            self.lvl1.start(self)
+
         #crÃƒÂ©ation du joueur
         self.player = Player(self)
         self.all_sprites.add(self.player)
@@ -35,17 +40,13 @@ class Game:
         #collision joueur
         self.player_col = Player_collision(self)
         self.all_sprites.add(self.player_col)
+        self.head_col = Head_collision(self)
+        self.all_sprites.add(self.head_col)
 
         #crÃƒÂ©ation de la tÃƒÂªte
         self.head = Head(self)
         self.all_sprites.add(self.head)
         self.player_sprite.add(self.head)
-
-        if self.scene.currentLevel == 0:
-            self.lvl0.start(self)
-        else:
-            self.lvl1.start(self)
-
 
 
     def new(self):
@@ -65,33 +66,6 @@ class Game:
 
     def update(self):
         self.all_sprites.update()
-        self.applyCollision()
-
-        #print("x: " + str(self.player.pos.x))
-        #print("y: " + str(self.player.pos.y))
-
-
-    def applyCollision(self):
-        #collision
-        """
-        player_hit = pg.sprite.spritecollide(self.player, self.platforms_sprite, False)
-        if player_hit:
-            self.player.pos.y = player_hit[0].rect.top
-            self.player.vel.y = 0
-        """
-
-        """
-
-        if self.head.isOn == False:
-            head_hit = pg.sprite.spritecollide(self.head, self.platforms_sprite, False)
-            if head_hit:
-                self.head.pos.y = head_hit[0].rect.top
-                self.head.vel.y = 0
-        """
-
-  
-
-
 
     def events(self):
         for event in pg.event.get():
@@ -108,3 +82,7 @@ class Game:
         self.screen.fill(WHITE)
         self.all_sprites.draw(self.screen)
         pg.display.flip()
+
+gameInstance = Game()
+while gameInstance.running:
+    gameInstance.new()

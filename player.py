@@ -50,7 +50,6 @@ class Player(pg.sprite.Sprite):
 
     
     def jump(self):
-        #player_hit = pg.sprite.spritecollide(self, self.game.platforms_sprite,False)
         if self.canJump:
             self.vel.y = -PLAYER_JUMP
 
@@ -77,7 +76,20 @@ class Player_collision(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
 
     def update(self):
-        self.rect.center = self.game.player.rect.center
+        self.rect.midbottom = self.game.player.pos
+
+class Head_collision(pg.sprite.Sprite):
+    def __init__(self,game):
+        pg.sprite.Sprite.__init__(self)
+        self.game = game
+        self.w = 22
+        self.h = 26
+        self.image = pg.Surface((self.w, self.h))
+        self.image.fill(PINK)
+        self.rect = self.image.get_rect()
+    def update(self):
+        self.rect.midbottom = self.game.head.pos 
+    
         
 
 
@@ -87,6 +99,9 @@ class Head(pg.sprite.Sprite):
         self.game = game
         self.isOn = True
         self.press = True
+        self.timer = COOLDOWN_HEAD #timer pour empecher le spam de la tete
+        self.teleport_timer = TELEPORT_TIMER
+        self.teleport_bool = False
 
         self.w = 20
         self.h = 20
@@ -102,12 +117,10 @@ class Head(pg.sprite.Sprite):
         self.vel = vec(0,0)
         self.acc = vec(0,0)
 
-    def update(self):
-        self.debug()
 
+    def update(self):
         self.acc = vec(0,PLAYER_GRAV * 3) #gravitÃƒÂ© pour que le personnage tombe
         keys = pg.key.get_pressed()
-
 
         if keys[pg.K_e] and self.isOn and self.press:
             self.isOn = False
@@ -119,20 +132,28 @@ class Head(pg.sprite.Sprite):
             self.teleport()
             self.press = False
 
-
-
         if self.isOn:
             self.on()
             self.image.fill(RED)
         else:
             self.notOn()
-            self.image.fill(GREEN)
+            self.image.fill(RED)
+
+        if self.teleport_bool:
+            print("cc")
+            self.teleport_timer -= 1
+        if self.teleport_timer < 0:
+            self.teleport_timer = TELEPORT_TIMER
+            self.teleport_bool = False
+            self.isOn = True
+
 
         self.pressWait()
 
     def teleport(self):
-        self.game.player.pos = self.pos
-        self.isOn = True
+        self.game.player.rect = self.rect
+        self.teleport_bool = True
+        
 
 
     def mouse_loc(self):
@@ -144,18 +165,15 @@ class Head(pg.sprite.Sprite):
 
     def pressWait(self):
         #EmpÃƒÂªche de pouvoir spam l'envoie de la tÃƒÂªte
-        self.hit = pg.sprite.spritecollide(self, self.game.platforms_sprite,False)
-        if self.hit:
-            self.press = True
-        elif self.rect.center == self.pos:
+        self.timer -= 1
+        if self.timer < 0:
+            self.timer = COOLDOWN_HEAD 
             self.press = True
 
     def on(self):
         #permet ÃƒÂ  la tÃƒÂªte d'ÃƒÂªtre au dessus du corps
-        self.x = self.game.player.rect.x + 0.5 * self.game.player.rect.w
-        self.y = self.game.player.rect.y - 0.5 * self.game.player.rect.h - 10
-        self.pos = (self.x, self.y)
-        self.rect.center = (self.x, self.y)
+        self.rect.midbottom = self.game.player.rect.midtop
+        self.pos = self.rect.midbottom
 
     def notOn(self):
         #permet au corps d'ÃƒÂªtre soumis ÃƒÂ  la gravitÃƒÂ© quand elle n'est pas au-dessus du corps
@@ -165,8 +183,6 @@ class Head(pg.sprite.Sprite):
 
         self.rect.midbottom = self.pos
 
-    def debug(self):
-        pass
 
 
 

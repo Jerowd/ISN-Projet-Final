@@ -15,6 +15,7 @@ class Ground(pg.sprite.Sprite):
        
 
         self.collision_player = [False] * 9
+        self.collision_head = [False] * 9
 
         self.game = game
 
@@ -29,20 +30,54 @@ class Ground(pg.sprite.Sprite):
         self.collision_player[7] = self.rect.collidepoint(self.game.player_col.rect.midbottom)
         self.collision_player[8] = self.rect.collidepoint(self.game.player_col.rect.center)
 
+
     def apply_collision_player(self):
         if self.collision_player[7]:
-            self.game.player.pos.y = self.rect.top
+            self.game.player.rect.bottom = self.rect.top
+            self.game.player.pos = self.game.player.rect.midbottom
             self.game.player.vel.y = 0
+            self.game.player.acc.y = 0
 
         if self.collision_player[5]:
             self.game.player.rect.right = self.rect.left
+            self.game.player.pos = self.game.player.rect.midbottom
             self.game.player.vel.x = 0
-            self.game.player.pos.x = self.rect.left - self.game.player.w / 2
+            
 
         if self.collision_player[4]:
             self.game.player.rect.left = self.rect.right
-            self.game.player.pos.x = self.rect.right + self.game.player.w / 2
+            self.game.player.pos = self.game.player.rect.midbottom
             self.game.player.vel.x = 0
+
+        
+    def check_collision_head(self):
+        self.collision_head[0] = self.rect.collidepoint(self.game.head_col.rect.topleft)
+        self.collision_head[1] = self.rect.collidepoint(self.game.head_col.rect.topright)
+        self.collision_head[2] = self.rect.collidepoint(self.game.head_col.rect.bottomleft)
+        self.collision_head[3] = self.rect.collidepoint(self.game.head_col.rect.bottomright)
+        self.collision_head[4] = self.rect.collidepoint(self.game.head_col.rect.midleft)
+        self.collision_head[5] = self.rect.collidepoint(self.game.head_col.rect.midright)
+        self.collision_head[6] = self.rect.collidepoint(self.game.head_col.rect.midtop)
+        self.collision_head[7] = self.rect.collidepoint(self.game.head_col.rect.midbottom)
+        self.collision_head[8] = self.rect.collidepoint(self.game.head_col.rect.center)
+
+    def apply_collision_head(self):
+        if self.collision_head[7] and self.game.head.isOn == False:
+            self.game.head.rect.bottom = self.rect.top
+            self.game.head.pos = self.game.head.rect.midbottom
+            self.game.head.vel.y = 0
+            self.game.head.acc.y = 0
+
+        if self.collision_head[5]:
+            self.game.head.rect.right = self.rect.left
+            self.game.head.pos = self.game.head.rect.midbottom
+            self.game.head.vel.x = 0
+
+        if self.collision_head[4]:
+            self.game.head.rect.left = self.rect.right
+            self.game.head.pos = self.game.head.rect.midbottom
+            self.game.head.vel.x = 0
+
 
 
         
@@ -63,6 +98,8 @@ class Ground(pg.sprite.Sprite):
     def update(self):
         self.check_collision_player()
         self.apply_collision_player()
+        self.check_collision_head()
+        self.apply_collision_head()
         self.jump_collision()
 
 

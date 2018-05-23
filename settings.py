@@ -5,8 +5,8 @@ pg.mixer.init()
 
 
 TITRE = "Go aHead"
-WIDTH = 1500
-HEIGHT = 750
+WIDTH = 1280	
+HEIGHT = 720
 screen = pg.display.set_mode((1500, 750))
 FPS = 60
 MUSIC = pg.mixer.Sound("8bit_Music.wav")
@@ -26,11 +26,15 @@ ORCHID = (218, 112, 214)
 
 
 #Physic
-PLAYER_FRICTION = -0.12
+PLAYER_FRICTION = -0.18
 PLAYER_ACC = 0.8
 PLAYER_GRAV = 0.4
 PLAYER_JUMP = 12
 SHOOT_FORCE = 30
+
+#Parametre de la tete
+COOLDOWN_HEAD = 80 # en frames
+TELEPORT_TIMER = 10
 
 #Rect_Menu
 

@@ -30,8 +30,6 @@ class Lvl0:
             self.all_sprites.add(self.ground)
             self.platforms_sprite.add(self.ground)
 
-        self.porte = sprites.Porte(600,600,self)
-        self.all_sprites.add(self.porte)
 
         
 
