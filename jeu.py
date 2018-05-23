@@ -63,9 +63,53 @@ class Game:
             self.events()
             self.update()
             self.draw()
+            self.lateUpdate()
+
+    def lateUpdate(self):
+        self.head.pos = self.head.rect.midbottom
+        self.player.pos = self.player.rect.midbottom
 
     def update(self):
         self.all_sprites.update()
+
+        self.debug()
+        
+        #HEAD
+        #player teleportation to head
+        keys = pg.key.get_pressed()
+
+        #tir
+        if keys[pg.K_e] and self.head.isOn and self.head.press:
+            self.head.isOn = False
+            self.head.mouse_loc()
+            self.head.press = False
+
+        #teleportation du corps sur la tete
+        elif keys[pg.K_q] and self.head.isOn == False and self.head.press:
+            self.teleport()
+            self.head.press = False
+
+        if self.head.isOn:
+            self.on()
+            self.head.image.fill(RED)
+        else:
+            self.head.notOn()   
+            self.head.image.fill(RED)
+
+        self.head.pressWait()
+
+        #tete sur le corps si isnotOn
+    def on(self):
+        self.head.rect.midbottom = self.player.rect.midtop
+        self.head.pos = self.head.rect.midbottom
+
+
+    def teleport(self):
+        self.player.rect = self.head.rect 
+        self.player.rect.y -= 100
+        self.player.pos = self.player.rect.midbottom
+        self.head.isOn = True
+
 
     def events(self):
         for event in pg.event.get():
@@ -82,6 +126,14 @@ class Game:
         self.screen.fill(WHITE)
         self.all_sprites.draw(self.screen)
         pg.display.flip()
+
+    def debug(self):
+        """
+        print(self.head.rect)
+        print(self.head.pos)
+        print(" ")
+        """
+        print(self.player.vel)
 
 gameInstance = Game()
 while gameInstance.running:

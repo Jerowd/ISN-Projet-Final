@@ -100,9 +100,6 @@ class Head(pg.sprite.Sprite):
         self.isOn = True
         self.press = True
         self.timer = COOLDOWN_HEAD #timer pour empecher le spam de la tete
-        self.teleport_timer = TELEPORT_TIMER
-        self.teleport_bool = False
-
         self.w = 20
         self.h = 20
         self.x = self.game.player.rect.x + 0.5 * self.game.player.rect.w
@@ -120,41 +117,6 @@ class Head(pg.sprite.Sprite):
 
     def update(self):
         self.acc = vec(0,PLAYER_GRAV * 3) #gravitÃƒÂ© pour que le personnage tombe
-        keys = pg.key.get_pressed()
-
-        if keys[pg.K_e] and self.isOn and self.press:
-            self.isOn = False
-            self.mouse_loc()
-            self.press = False
-
-
-        elif keys[pg.K_q] and self.isOn == False and self.press:
-            self.teleport()
-            self.press = False
-
-        if self.isOn:
-            self.on()
-            self.image.fill(RED)
-        else:
-            self.notOn()
-            self.image.fill(RED)
-
-        if self.teleport_bool:
-            print("cc")
-            self.teleport_timer -= 1
-        if self.teleport_timer < 0:
-            self.teleport_timer = TELEPORT_TIMER
-            self.teleport_bool = False
-            self.isOn = True
-
-
-        self.pressWait()
-
-    def teleport(self):
-        self.game.player.rect = self.rect
-        self.teleport_bool = True
-        
-
 
     def mouse_loc(self):
         #dÃƒÂ©tecte la position de la souris et permet de tirer la tÃƒÂªte
@@ -169,11 +131,6 @@ class Head(pg.sprite.Sprite):
         if self.timer < 0:
             self.timer = COOLDOWN_HEAD 
             self.press = True
-
-    def on(self):
-        #permet ÃƒÂ  la tÃƒÂªte d'ÃƒÂªtre au dessus du corps
-        self.rect.midbottom = self.game.player.rect.midtop
-        self.pos = self.rect.midbottom
 
     def notOn(self):
         #permet au corps d'ÃƒÂªtre soumis ÃƒÂ  la gravitÃƒÂ© quand elle n'est pas au-dessus du corps
