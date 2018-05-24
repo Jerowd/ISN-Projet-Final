@@ -78,6 +78,7 @@ class Game:
         self.debug()
         
         #HEAD
+        self.head.acc = vec(0,PLAYER_GRAV)
         #player teleportation to head
         keys = pg.key.get_pressed()
 
@@ -119,9 +120,8 @@ class Game:
 
 
     def teleport(self):
-        self.player.rect = self.head.rect 
-        self.player.rect.y -= 100
-        self.player.pos = self.player.rect.midbottom
+        self.player.pos = self.head.rect.midtop
+        self.player.rect.midbottom = self.head.rect.midtop
         self.head.isOn = True
 
 
@@ -142,19 +142,8 @@ class Game:
         pg.display.flip()
 
     def debug(self):
-        """
-        print(self.head.rect)
-        print(self.head.pos)
-        print(" ")
-    
-        print(self.player.vel)
-    
-        print(self.player.rect)
-        print(self.player.pos)
-        print(" ")
-        """
-
-        print(self.player.rect.bottom)
+        pass
+       
 
 
 gameInstance = Game()

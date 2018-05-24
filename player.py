@@ -18,10 +18,6 @@ class Player(pg.sprite.Sprite):
         self.acc = vec(0,0)
         self.canJump = False
 
-        self.image_collision = pg.Surface((self.w + 2, self.h + 2))
-        self.image_collision.fill(GREEN)
-        self.rect_col = self.image_collision.get_rect()
-
         
     def move(self):
         self.acc.x += self.vel.x * PLAYER_FRICTION
@@ -46,24 +42,12 @@ class Player(pg.sprite.Sprite):
             self.jump()
 
         self.move()
-        self.limites()
 
     
     def jump(self):
         if self.canJump:
             self.vel.y = -PLAYER_JUMP
 
-    def limites(self):
-        if self.pos.y > HEIGHT:
-            self.game.new()
-
-        if self.pos.x > WIDTH:
-            self.pos.x = 0
-        elif self.pos.x < 0:
-            self.pos.x = WIDTH
-
-        if self.pos.y - self.h < 0:
-            self.pos.y = self.h
 
 class Player_collision(pg.sprite.Sprite):
     def __init__(self,game):
@@ -113,10 +97,6 @@ class Head(pg.sprite.Sprite):
         self.pos = vec(self.x, self.y)
         self.vel = vec(0,0)
         self.acc = vec(0,0)
-
-
-    def update(self):
-        self.acc = vec(0,PLAYER_GRAV * 3) #gravitÃƒÂ© pour que le personnage tombe
 
     def mouse_loc(self):
         #dÃƒÂ©tecte la position de la souris et permet de tirer la tÃƒÂªte
