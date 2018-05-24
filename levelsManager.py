@@ -30,6 +30,9 @@ class Lvl0:
             self.all_sprites.add(self.ground)
             self.platforms_sprite.add(self.ground)
 
+        self.porte = sprites.Porte(720,HEIGHT-200,self)
+        self.all_sprites.add(self.porte)
+
 
         
 
@@ -52,15 +55,6 @@ class Lvl1:
             self.platforms_sprite.add(self.ground)
 
 
-
-        #pieges
-        self.piegesTombent = [(WIDTH - 250, -20, 50,50, HEIGHT-150, self),
-                               (WIDTH - 350, -20, 50,50, HEIGHT-150, self)]
-
-        for p in self.piegesTombent:
-            self.piege = sprites.Falling_traps(p[0], p[1], p[2], p[3], p[4], self)
-            self.all_sprites.add(self.piege)
-            self.platforms_sprite.add(self.piege)
 
 
         #porte

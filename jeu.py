@@ -104,7 +104,22 @@ class Game:
 
         self.head.pressWait()
 
-        #application de la collision sur la tete
+        #timer tp
+        if self.head.timerIsActive:
+            self.head.timerTP -= 1
+        if self.head.timerTP < 0:
+            self.head.canTp = True
+            self.head.timerTP = 2
+            self.head.timerIsActive = False
+
+        #teleporation
+        if self.head.canTp:
+            self.player.pos = self.head.pos
+            self.player.rect.midbottom = self.head.rect.midtop
+            self.head.isOn = True
+            self.head.canTp = False
+
+
 
         #tete sur le corps si isnotOn
     def on(self):
@@ -122,9 +137,9 @@ class Game:
 
 
     def teleport(self):
-        self.player.pos = self.head.rect.midtop
-        self.player.rect.midbottom = self.head.rect.midtop
-        self.head.isOn = True
+        self.head.vel.y = -100
+        self.head.timerIsActive = True
+        
 
 
     def events(self):
