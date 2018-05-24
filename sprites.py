@@ -62,18 +62,17 @@ class Ground(pg.sprite.Sprite):
         self.collision_head[8] = self.rect.collidepoint(self.game.head_col.rect.center)
 
     def apply_collision_head(self):
-        if self.collision_head[7]:
-            self.game.head.pos = self.game.player.rect.midbottom
+        if self.collision_head[7] and self.game.head.apply_col:
+            self.game.head.pos = (self.game.head.pos.x, self.rect.top)
+            self.game.head.rect.bottom = self.rect.top
             self.game.head.vel.y = 0
 
         if self.collision_head[5]:
             self.game.head.rect.right = self.rect.left
-            self.game.head.pos = self.game.head.rect.midbottom
             self.game.head.vel.x = 0
 
         if self.collision_head[4]:
             self.game.head.rect.left = self.rect.right
-            self.game.head.pos = self.game.head.rect.midbottom
             self.game.head.vel.x = 0
 
     def jump_collision(self):

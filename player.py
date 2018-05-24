@@ -92,6 +92,8 @@ class Head(pg.sprite.Sprite):
         self.image.fill(RED)
         self.rect = self.image.get_rect()
 
+        self.apply_col = False
+
         #init pos
         self.rect.center = (self.x, self.y)
         self.pos = vec(self.x, self.y)

@@ -78,7 +78,7 @@ class Game:
         self.debug()
         
         #HEAD
-        self.head.acc = vec(0,PLAYER_GRAV)
+        self.head.acc = vec(0,PLAYER_GRAV * 3)
         #player teleportation to head
         keys = pg.key.get_pressed()
 
@@ -87,9 +87,11 @@ class Game:
             self.head.isOn = False
             self.head.mouse_loc()
             self.head.press = False
+            self.head.apply_col = True
 
         #teleportation du corps sur la tete
         elif keys[pg.K_q] and self.head.isOn == False and self.head.press:
+            self.head.apply_col = False
             self.teleport()
             self.head.press = False
 
@@ -142,7 +144,7 @@ class Game:
         pg.display.flip()
 
     def debug(self):
-        pass
+        print(self.head.apply_col)
        
 
 
