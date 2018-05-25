@@ -93,7 +93,7 @@ class Head(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
 
         self.apply_col = False
-        self.timerTP = 2
+        self.timerTP = 10
         self.timerIsActive = False
         self.canTp = False
 

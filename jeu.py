@@ -90,7 +90,7 @@ class Game:
             self.head.apply_col = True
 
         #teleportation du corps sur la tete
-        elif keys[pg.K_q] and self.head.isOn == False and self.head.press:
+        elif keys[pg.K_q] and self.head.isOn == False:
             self.head.apply_col = False
             self.teleport()
             self.head.press = False
@@ -107,17 +107,20 @@ class Game:
         #timer tp
         if self.head.timerIsActive:
             self.head.timerTP -= 1
+            self.head.vel.y = -5
         if self.head.timerTP < 0:
             self.head.canTp = True
-            self.head.timerTP = 2
+            self.head.timerTP = 10
             self.head.timerIsActive = False
 
         #teleporation
         if self.head.canTp:
-            self.player.pos = self.head.pos
+            self.player.pos = self.head.rect.midtop
             self.player.rect.midbottom = self.head.rect.midtop
+            print("line ok")
             self.head.isOn = True
-            self.head.canTp = False
+            self.head.canTp = False 
+
 
 
 
@@ -137,7 +140,9 @@ class Game:
 
 
     def teleport(self):
-        self.head.vel.y = -100
+        print("téléport")
+        self.player.rect.y -=10
+        self.player.vel.y = -10
         self.head.timerIsActive = True
         
 
@@ -159,7 +164,7 @@ class Game:
         pg.display.flip()
 
     def debug(self):
-        print(self.head.apply_col)
+        print(self.player.pos)
        
 
 
