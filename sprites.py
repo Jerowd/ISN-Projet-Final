@@ -8,7 +8,6 @@ class Ground(pg.sprite.Sprite):
         self.image = pg.Surface((w, h))
         self.image.fill(BLACK)
         self.rect = self.image.get_rect()
-        #self.rect.move_ip(0,-20)
         self.rect.x = x
         self.rect.y = y
         self.timer = 10
@@ -50,7 +49,7 @@ class Ground(pg.sprite.Sprite):
             self.game.player.vel.x = 0
 
         if self.collision_player[6]:
-            self.game.player.rect.top = self.rect.bottom + 10
+            self.game.player.rect.top = self.rect.bottom + 20
             self.game.player.pos = self.game.player.rect.midbottom
             self.game.player.vel.y = 0
 
@@ -68,8 +67,8 @@ class Ground(pg.sprite.Sprite):
 
     def apply_collision_head(self):
         if self.collision_head[7] and self.game.head.apply_col:
-            self.game.head.pos = (self.game.head.pos.x, self.rect.top)
-            self.game.head.rect.bottom = self.rect.top
+            self.game.head.rect.bottom = self.head.top
+            self.game.head.pos = self.game.player.head.midbottom
             self.game.head.vel.y = 0
 
         if self.collision_head[5]:
@@ -81,7 +80,7 @@ class Ground(pg.sprite.Sprite):
             self.game.head.vel.x = 0
 
         if self.collision_player[6]:
-            self.game.head.rect.top = self.rect.bottom + 10
+            self.game.head.rect.top = self.rect.bottom + 20
             self.game.head.pos = self.game.head.rect.midbottom
             self.game.head.vel.y = 0
 
@@ -105,7 +104,6 @@ class Ground(pg.sprite.Sprite):
         self.apply_collision_head()
         self.jump_collision()
 
-
 class Spikes(pg.sprite.Sprite):
     def __init__(self, x, y, w, h, game):
         pg.sprite.Sprite.__init__(self)
@@ -122,7 +120,7 @@ class Spikes(pg.sprite.Sprite):
     def mort(self):
         self.hit = pg.sprite.spritecollide(self, self.game.player_sprite,False)
         if self.hit:
-            self.game.new()
+            self.game.gameoverInstance.loop(screen)
 
 class Falling_traps(pg.sprite.Sprite):
 
@@ -139,7 +137,7 @@ class Falling_traps(pg.sprite.Sprite):
         self.bounderies = bounderies
 
     def update(self):
-        if self.rect.x < self.game.player.pos.x < self.rect.x + self.w or self.rect.x < self.game.head.rect.x < self.rect.x + self.w:
+        if self.rect.x < self.game.player.rect.x < self.rect.x + self.w or self.rect.x < self.game.head.rect.x < self.rect.x + self.w:
             self.isFalling = True
 
         self.fall()
@@ -157,11 +155,11 @@ class Falling_traps(pg.sprite.Sprite):
     def mort(self):
         self.hit = pg.sprite.spritecollide(self, self.game.player_sprite,False)
         if self.hit:
-            self.game.new()
+            self.game.gameoverInstance.loop(screen)
 
 class Porte(pg.sprite.Sprite):
 
-    def __init__(self,x,y,game):
+    def __init__(self,x,y, game):
         pg.sprite.Sprite.__init__(self)
         self.game = game
         self.x = x
@@ -169,7 +167,12 @@ class Porte(pg.sprite.Sprite):
         self.w = 40
         self.h = 100
         self.scene = Scene
-        
+
+        self.highscore_lvl0 = highscore_lvl0
+        self.highscore_lvl1 = highscore_lvl1
+        self.highscore_lvl2 = highscore_lvl2
+        self.highscore_lvl3 = highscore_lvl3
+
         self.image = pg.Surface((self.w,self.h))
         self.image.fill(BLUE)
         self.rect = self.image.get_rect()
@@ -178,9 +181,20 @@ class Porte(pg.sprite.Sprite):
 
     def update(self):
         hit = pg.sprite.spritecollide(self, self.game.player_sprite,False)
-        if hit:
+        self.score = 5000 - self.game.compteur_score
+        if pg.sprite.spritecollide(self, self.game.player_sprite,False):
+            if self.game.scene.currentLevel == 0 and self.score > self.highscore_lvl0:
+                self.highscore_lvl0 = (self.score)
+            if self.game.scene.currentLevel == 1 and self.score > self.highscore_lvl1:
+                self.highscore_lvl1 = (self.score)
+            if self.game.scene.currentLevel == 2 and self.score > self.highscore_lvl2:
+                self.highscore_lvl2 = (self.score)
+            if self.game.scene.currentLevel == 3 and self.score > self.highscore_lvl3:
+                self.highscore_lvl3 = (self.score)
             self.scene.currentLevel += 1
+
             print(self.scene.currentLevel)
+
             self.loadNewLevel()
 
     def loadNewLevel(self):
@@ -189,7 +203,7 @@ class Porte(pg.sprite.Sprite):
 
 class Laser_horiz(pg.sprite.Sprite):
 
-    def __init__(self, x, y, w, h, game):
+    def __init__(self, x, y, w, h, sens, game):
          pg.sprite.Sprite.__init__(self)
          self.game = game
          self.x = x
@@ -197,8 +211,7 @@ class Laser_horiz(pg.sprite.Sprite):
          self.w = 40
          self.h = 100
 
-         self.image = pg.Surface((self.w,self.h))
-         self.image.fill(BLUE)
+
          self.image = pg.Surface((w, h))
          self.image.fill(ORCHID)
          self.rect = self.image.get_rect()
@@ -210,21 +223,24 @@ class Laser_horiz(pg.sprite.Sprite):
 
     def update(self):
         hit = pg.sprite.spritecollide(self, self.game.player_sprite,False)
-        self.rect.x += LASER_SPEED
+        if self.sens == "right":
+            self.rect.x += LASER_SPEED
+        else:
+            self.rect.x -= LASER_SPEED
         self.contact()
 
 
 
     def contact(self):
 
-        if self.rect.x == WIDTH:
+        if self.rect.x == 1280:
             self.rect.x = self.baselaser
 
 
         self.hit_player = pg.sprite.spritecollide(self, self.game.player_sprite,False)
 
         if self.hit_player:
-            self.game.new()
+            self.game.gameoverInstance.loop(screen)
 
         self.hit_sprites = pg.sprite.spritecollide(self, self.game.platforms_sprite, False)
 
@@ -232,3 +248,119 @@ class Laser_horiz(pg.sprite.Sprite):
             self.rect.x = self.baselaser
 
 
+class Button(pg.sprite.Sprite):
+    def __init__(self, x, y, w, h, nom_channel, perma, game):
+         pg.sprite.Sprite.__init__(self)
+         self.game = game
+         self.x = x
+         self.y = y
+         self.w = w
+         self.h = h
+         self.perma = perma  #Permet de savoir si le bouton reste activÃ© pour toujours
+         self.channel = nom_channel
+         self.activated = False
+         self.image = pg.Surface((self.w,self.h))
+         self.image.fill(RED)
+         self.rect = self.image.get_rect()
+         self.rect.x = self.x
+         self.rect.y = self.y
+         self.game = game
+         self.compteur = 0
+
+
+    def update(self):
+        if self.activated:
+            self.image.fill(GREEN)
+        else:
+            self.image.fill(RED)
+        self.contact()
+        if self.activated and self.perma:
+            self.compteur += 1
+        if self.compteur >= 500:
+            self.activated = False
+            self.compteur = 0
+            if self.channel == "button_3":
+                self.channel_button_3_undo()
+            if self.channel == "button_4":
+                self.channel_button_4_undo()
+            if self.channel == "button_5":
+                self.channel_button_5_undo()
+            if self.channel == "button_6":
+                self.channel_button_6_undo()
+
+    def contact(self):
+
+        self.hit_player = pg.sprite.spritecollide(self, self.game.player_sprite,False)
+
+        if self.hit_player:
+            self.game.player.rect.y = self.hit_player[0].rect.top
+            self.game.player.pos = self.game.player.rect.midbottom
+            self.activated = True
+            self.image.fill(GREEN)
+
+            #Quelle action va effectuer le bouton ?
+
+            if self.channel == "button_1" and self.activated:
+                self.channel_button_1()
+
+            if self.channel == "button_2" and self.activated:
+                self.channel_button_2()
+
+            if self.channel == "button_3" and self.activated:
+                self.channel_button_3()
+
+            if self.channel == "button_4" and self.activated:
+                self.channel_button_4()
+
+            if self.channel == "button_5" and self.activated:
+                self.channel_button_5()
+
+            if self.channel == "button_6" and self.activated:
+                self.channel_button_6()
+
+    #actions des boutons
+
+    def channel_button_1(self):
+        self.platform_button_1 = Ground(820, 160, 120, 20, self)
+        self.game.platforms_sprite.add(self.platform_button_1)
+        self.game.all_sprites.add(self.platform_button_1)
+
+    def channel_button_2(self):
+        self.platform_button_2 = Ground(100, 280, 80, 450, self)
+        self.game.platforms_sprite.add(self.platform_button_2)
+        self.game.all_sprites.add(self.platform_button_2)
+        self.platform_button_3 = Ground(180, 400, 80, 330, self)
+        self.game.platforms_sprite.add(self.platform_button_3)
+        self.game.all_sprites.add(self.platform_button_3)
+
+    def channel_button_3(self):
+        self.game.all_sprites.remove(self.game.wall_button_1)
+        self.game.platforms_sprite.remove(self.game.wall_button_1)
+
+    def channel_button_3_undo(self):
+        self.game.all_sprites.add(self.game.wall_button_1)
+        self.game.platforms_sprite.add(self.game.wall_button_1)
+
+    def channel_button_4(self):
+        self.game.all_sprites.remove(self.game.wall_button_2)
+        self.game.platforms_sprite.remove(self.game.wall_button_2)
+
+    def channel_button_4_undo(self):
+        self.game.all_sprites.add(self.game.wall_button_2)
+        self.game.platforms_sprite.add(self.game.wall_button_2)
+
+    def channel_button_5(self):
+        self.game.all_sprites.remove(self.game.wall_button_3)
+        self.game.platforms_sprite.remove(self.game.wall_button_3)
+
+    def channel_button_5_undo(self):
+        self.game.all_sprites.add(self.game.wall_button_3)
+        self.game.platforms_sprite.add(self.game.wall_button_3)
+
+    def channel_button_6(self):
+        self.game.all_sprites.remove(self.game.wall_button_4)
+        self.game.platforms_sprite.remove(self.game.wall_button_4)
+
+    def channel_button_6_undo(self):
+        self.game.all_sprites.add(self.game.wall_button_4)
+        self.game.platforms_sprite.add(self.game.wall_button_4)

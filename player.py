@@ -12,8 +12,8 @@ class Player(pg.sprite.Sprite):
         self.image = pg.Surface((self.w,self.h))
         self.image.fill(BLACK)
         self.rect = self.image.get_rect()
-        self.rect.center = (WIDTH / 2, HEIGHT / 2)
-        self.pos = vec(WIDTH / 2,HEIGHT / 2)
+        self.rect.center = (1230, 100)
+        self.pos = vec(1230, 100)
         self.vel = vec(0,0)
         self.acc = vec(0,0)
         self.canJump = False
@@ -36,12 +36,21 @@ class Player(pg.sprite.Sprite):
             self.acc.x = -PLAYER_ACC
 
         if keys[pg.K_d]:
-            self.acc.x = PLAYER_ACC
+            self.acc.x = PLAYER_ACC 
 
         if keys[pg.K_SPACE]:
             self.jump()
 
         self.move()
+        self.bounderies()
+
+
+    def bounderies(self):
+
+        if self.rect.y > HEIGHT:
+            print("bounderies")
+            self.pos = (self.rect.x, 1200)
+            self.rect.y = 1200
 
     
     def jump(self):
@@ -54,7 +63,7 @@ class Player_collision(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self)
         self.game = game
         self.w = 20
-        self.h = 30
+        self.h = 40
         self.image = pg.Surface((self.w, self.h))
         self.image.set_alpha(0)
         self.rect = self.image.get_rect()
@@ -91,6 +100,7 @@ class Head(pg.sprite.Sprite):
         self.image = pg.Surface((self.w, self.h))
         self.image.fill(RED)
         self.rect = self.image.get_rect()
+        self.mouse_raw = pg.mouse.get_pos()
 
         self.apply_col = False
         self.timerTP = 10

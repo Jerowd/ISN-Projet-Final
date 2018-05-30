@@ -1,2 +1,1 @@
-from jeu import *
- 
+from GoAhead import *
