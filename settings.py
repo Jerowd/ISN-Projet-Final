@@ -6,7 +6,7 @@ pg.mixer.init()
 WIDTH = 1280
 HEIGHT = 720
 
-#a retirer ? c'est meme pas une constante useless af 
+#a retirer ? c'est meme pas une constante useless af
 GameRunning = True
 
 TITRE = "Go aHead"
@@ -31,11 +31,6 @@ LASER_SPEED = 10
 whitedrops = []
 reddrops = []
 
-highscore_lvl0 = 0
-highscore_lvl1 = 0
-highscore_lvl2 = 0
-highscore_lvl3 = 0
-default_highscore = 0
 
 niv_atteints = []
 #COLORS
@@ -49,11 +44,11 @@ ORCHID = (218, 112, 214)
 GREYART = (35, 55, 35)
 
 #Physic
-PLAYER_FRICTION = -0.2
-PLAYER_ACC = 0.8
+PLAYER_FRICTION = -0.25
+PLAYER_ACC = 0.9
 PLAYER_GRAV = 0.6
-PLAYER_JUMP = 12
-SHOOT_FORCE = 50
+PLAYER_JUMP = 13
+SHOOT_FORCE = 60
 
 #Parametre de la tete
 COOLDOWN_HEAD = 80 # en frames

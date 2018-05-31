@@ -4,7 +4,8 @@ import sprites
 vec = pg.math.Vector2
 
 class Scene():
-    currentLevel = 4
+    currentLevel = 6
+
 
     #fonctions qui spawn les murs de base
     def SpawnDefaultWalls(self):
@@ -18,12 +19,14 @@ class Scene():
                 self.all_sprites.add(self.ground)
                 self.platforms_sprite.add(self.ground)
 
-class Lvl0:
+class Lvl1:
     def start(self):
 
+        self.player.rect.center = (40, 640)
+        self.player.pos = vec(40, 640)
 
-        if not "lvl0" in niv_atteints:
-            niv_atteints.append("lvl0")
+        if not "lvl1" in niv_atteints:
+            niv_atteints.append("lvl1")
 
         print(niv_atteints)
 
@@ -54,14 +57,15 @@ class Lvl0:
         self.porte = sprites.Porte(1200, 20,self)
         self.all_sprites.add(self.porte)
 
-class Lvl1:
+class Lvl2:
     def start(self):
         print(niv_atteints)
 
-        if not "lvl1" in niv_atteints:
-            niv_atteints.append("lvl1")
+        if not "lvl2" in niv_atteints:
+            niv_atteints.append("lvl2")
 
-        self.player.rect.center = (20, 300)
+        self.player.rect.center = (40, 120)
+        self.player.pos = vec(40, 120)
 
         #sols
         self.grounds = [(880,360,60, 360, self),
@@ -88,16 +92,17 @@ class Lvl1:
         self.porte = sprites.Porte(1200,620,self)
         self.all_sprites.add(self.porte)
 
-class Lvl2:
+class Lvl3:
     def start(self):
 
-        if not "lvl2" in niv_atteints:
-            niv_atteints.append("lvl2")
+        if not "lvl3" in niv_atteints:
+            niv_atteints.append("lvl3")
 
         print(niv_atteints)
 
         #position du joueur
-        self.player.rect.center = (20, 680)
+        self.player.rect.center = (40, 640)
+        self.player.pos = vec(40, 640)
 
         #sols
         self.grounds = [(160,640,30, 70, self),
@@ -125,30 +130,22 @@ class Lvl2:
             self.all_sprites.add(self.falling_traps)
             self.platforms_sprite.add(self.falling_traps)
 
-        self.spikes = [(630,690,55, 20, self)
-                       ]
-
-        for s in self.spikes:
-            self.spike = sprites.Spikes(s[0], s[1], s[2], s[3], self)
-            self.all_sprites.add(self.spike)
-            self.platforms_sprite.add(self.spike)
-
-
-                #porte
+        #porte
         self.porte = sprites.Porte(1200,620,self)
         self.all_sprites.add(self.porte)
 
 
-class Lvl3:
+class Lvl4:
     def start(self):
 
-        if not "lvl3" in niv_atteints:
-            niv_atteints.append("lvl3")
+        if not "lvl4" in niv_atteints:
+            niv_atteints.append("lvl4")
+
+        self.player.rect.center = (1200, 150)
+        self.player.pos = vec(1200, 150)
 
         print(niv_atteints)
 
-        #position du joueur
-        self.player.rect.center = (20, 680)
 
         #sols
         self.grounds = [(20,160,90, 550, self),
@@ -163,27 +160,32 @@ class Lvl3:
 
 
         #buttons
-        self.buttons = [(1110, 150, 40, 10, "button_1", False, self),
-                        (980, 680, 40, 10, "button_2", False, self)
-                        ]
 
-        for b in self.buttons:
-            self.button = sprites.Button(b[0], b[1], b[2], b[3], b[4], b[5], self)
-            self.all_sprites.add(self.button)
-            self.platforms_sprite.add(self.button)
+        self.button_1 = sprites.Button(1110, 150, 40, 10, "button_1", False, self)
+        self.all_sprites.add(self.button_1)
+        self.platforms_sprite.add(self.button_1)
 
-        self.porte = sprites.Porte(1200, 30,self)
+        self.button_2 = sprites.Button(980, 680, 40, 10, "button_2", False, self)
+        self.all_sprites.add(self.button_2)
+        self.platforms_sprite.add(self.button_2)
+
+
+        #porte
+        self.porte = sprites.Porte(40, 50,self)
         self.all_sprites.add(self.porte)
 
 
         print(niv_atteints)
 
-class Lvl4:
+class Lvl5:
     def start(self):
 
         self.move = False
-        if not "lvl4" in niv_atteints:
-            niv_atteints.append("lvl4")
+        if not "lvl5" in niv_atteints:
+            niv_atteints.append("lvl5")
+
+        self.player.rect.center = (1220, 50)
+        self.player.pos = vec(1220, 50)
 
         print(niv_atteints)
 
@@ -261,16 +263,22 @@ class Lvl4:
             self.all_sprites.add(self.button)
             self.platforms_sprite.add(self.button)
 
-class Lvl5:
+        #porte
+        self.porte = sprites.Porte(40, 570,self)
+        self.all_sprites.add(self.porte)
+
+
+class Lvl6:
     def start(self):
 
-        if not "lvl5" in niv_atteints:
-            niv_atteints.append("lvl5")
+        if not "lvl6" in niv_atteints:
+            niv_atteints.append("lvl6")
 
 
 
         #position du joueur
-        self.player.pos = vec(20, 680)
+        self.player.rect.center = (1210, 640)
+        self.player.pos = vec(1210, 640)
 
         #sols
         self.grounds = [(30,30, 120, 160, self),
@@ -320,8 +328,7 @@ class Lvl5:
             self.platforms_sprite.add(self.spike)
 
         #buttons
-        self.buttons = [(550, 70, 20, 40, "button_7", False, self),
-                        (90, 250 , 40, 20, "button_8", False, self)
+        self.buttons = [(90, 250 , 40, 20, "button_8", False, self)
                         ]
 
         for b in self.buttons:
@@ -329,5 +336,6 @@ class Lvl5:
             self.all_sprites.add(self.button)
             self.platforms_sprite.add(self.button)
 
-
-
+        self.button_7 = sprites.Button(550, 70, 20, 40, "button_7", False, self)
+        self.all_sprites.add(self.button_7)
+        self.platforms_sprite.add(self.button_7)

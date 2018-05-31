@@ -21,12 +21,12 @@ class Game:
         #INITIALISATION DES NIVEAUX
         niv_atteints= [ ]
         self.scene = Scene
-        self.lvl0 = Lvl0
         self.lvl1 = Lvl1
         self.lvl2 = Lvl2
         self.lvl3 = Lvl3
         self.lvl4 = Lvl4
-
+        self.lvl5 = Lvl5
+        self.lvl6 = Lvl6
     def spawnObjects(self):
         #crÃƒÂ©ation des groupes de sprites
         self.all_sprites = pg.sprite.Group()
@@ -49,15 +49,12 @@ class Game:
         self.all_sprites.add(self.head)
         self.player_sprite.add(self.head)
 
-        if self.scene.currentLevel == 0:
-            self.lvl0.start(self)
-
-        elif self.scene.currentLevel == 1:
+        if self.scene.currentLevel == 1:
             self.lvl1.start(self)
-
 
         elif self.scene.currentLevel == 2:
             self.lvl2.start(self)
+
 
         elif self.scene.currentLevel == 3:
             self.lvl3.start(self)
@@ -68,7 +65,10 @@ class Game:
         elif self.scene.currentLevel == 5:
             self.lvl5.start(self)
 
-        
+        elif self.scene.currentLevel == 6:
+            self.lvl6.start(self)
+
+
 
 
 
@@ -92,10 +92,6 @@ class Game:
             pg.draw.rect(screen, BLACK, self.POS_RECT_SCORE)
             screen.blit(self.TXT_SCORE, self.POS_TXT_SCORE)
             self.draw()
-
-            if highscore_lvl0 != 0:
-                print(highscore_lvl0)
-
 
 
     def update(self):
@@ -146,7 +142,7 @@ class Game:
             self.on()
             self.head.image.fill(GREEN)
         else:
-            self.notOn()   
+            self.notOn()
             self.head.image.fill(RED)
 
         self.head.pressWait()
@@ -165,11 +161,14 @@ class Game:
             self.player.pos = self.head.rect.midtop
             self.player.rect.midbottom = self.head.rect.midtop
             self.head.isOn = True
-            self.head.canTp = False 
+            self.head.canTp = False
 
         #gestion des boutons dans les niveaux
-        if self.scene.currentLevel == 3:
+        if self.scene.currentLevel == 4:
             self.boutonManager()
+
+        if self.scene.currentLevel == 6:
+            self.boutonManager_2()
 
         self.all_sprites.update()
 
@@ -191,16 +190,16 @@ class Game:
     def teleport(self):
         self.head.timerIsActive = True
 
-        
+
     def boutonManager(self):
-        if self.button.btn_1_active:
-            self.button.btn_1_active = False
+        if self.button_1.btn_1_active:
+            self.button_1.btn_1_active = False
             self.platform_button_1 = Ground(820, 160, 120, 20, self)
             self.platforms_sprite.add(self.platform_button_1)
             self.all_sprites.add(self.platform_button_1)
 
-        if self.button.btn_2_active:
-            self.button.btn_2_active = False
+        if self.button_2.btn_2_active:
+            self.button_2.btn_2_active = False
             self.platform_button_2 = Ground(100, 280, 80, 450, self)
             self.platforms_sprite.add(self.platform_button_2)
             self.all_sprites.add(self.platform_button_2)
@@ -208,6 +207,14 @@ class Game:
             self.platforms_sprite.add(self.platform_button_3)
             self.all_sprites.add(self.platform_button_3)
 
+    def boutonManager_2(self):
+
+        if self.button_7.btn_7_active:
+            print("ZZZZZ")
+            self.button_7.btn_7_active = False
+            self.platform_button_7 = sprites.Ground(510, 600, 240, 30, self)
+            self.platforms_sprite.add(self.platform_button_7)
+            self.all_sprites.add(self.platform_button_7)
 
 
     def events(self):

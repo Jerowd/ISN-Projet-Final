@@ -12,23 +12,23 @@ class Player(pg.sprite.Sprite):
         self.image = pg.Surface((self.w,self.h))
         self.image.fill(BLACK)
         self.rect = self.image.get_rect()
-        self.rect.center = (1200, 100)
-        self.pos = vec(1200, 100) 
+        self.rect.center = (-20, -20)
+        self.pos = vec(-20, -20) 
         self.vel = vec(0,0)
         self.acc = vec(0,0)
         self.canJump = False
         self.jumping = False
         self.timer = JUMP_TIMER
 
-        
+
     def move(self):
         self.acc.x += self.vel.x * PLAYER_FRICTION
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
 
         self.rect.midbottom = self.pos
-        
-        
+
+
 
     def update(self):
         self.acc = vec(0,PLAYER_GRAV)
@@ -38,14 +38,14 @@ class Player(pg.sprite.Sprite):
             self.acc.x = -PLAYER_ACC
 
         if keys[pg.K_d]:
-            self.acc.x = PLAYER_ACC 
+            self.acc.x = PLAYER_ACC
 
         if keys[pg.K_SPACE] and self.canJump:
             self.jump()
 
         self.jumpTimer()
         self.move()
-    
+
     def jumpTimer(self):
         self.timer -= 1
         if self.timer < 0:
@@ -83,8 +83,8 @@ class Head_collision(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
     def update(self):
         self.rect.center = self.game.head.rect.center
-    
-        
+
+
 
 
 class Head(pg.sprite.Sprite):
@@ -125,17 +125,5 @@ class Head(pg.sprite.Sprite):
         #EmpÃƒÂªche de pouvoir spam l'envoie de la tÃƒÂªte
         self.timer -= 1
         if self.timer < 0:
-            self.timer = COOLDOWN_HEAD 
+            self.timer = COOLDOWN_HEAD
             self.press = True
-
-  
-
-
-
-
-
-
-
-
-
-

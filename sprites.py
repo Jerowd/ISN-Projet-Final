@@ -12,7 +12,7 @@ class Ground(pg.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
-       
+
 
         self.collision_player = [False] * 9
         self.collision_head = [False] * 9
@@ -30,7 +30,7 @@ class Ground(pg.sprite.Sprite):
         self.collision_player[7] = self.rect.collidepoint(self.game.player_col.rect.midbottom)
         self.collision_player[8] = self.rect.collidepoint(self.game.player_col.rect.center)
 
-        
+
 
 
     def apply_collision_player(self):
@@ -44,7 +44,7 @@ class Ground(pg.sprite.Sprite):
             self.game.player.rect.right = self.rect.left
             self.game.player.pos = self.game.player.rect.midbottom
             self.game.player.vel.x = 0
-            
+
 
         if self.collision_player[4]:
             self.game.player.rect.left = self.rect.right
@@ -56,7 +56,7 @@ class Ground(pg.sprite.Sprite):
             self.game.player.pos = self.game.player.rect.midbottom
             self.game.player.vel.y = 0
 
-        
+
     def check_collision_head(self):
         self.collision_head[0] = self.rect.collidepoint(self.game.head_col.rect.topleft)
         self.collision_head[1] = self.rect.collidepoint(self.game.head_col.rect.topright)
@@ -91,14 +91,14 @@ class Ground(pg.sprite.Sprite):
         if self.game.player.jumping == True and self.collision_player[7] == False:
             self.game.player.jumping = False
 
-        
-        
-            
+
+
+
 
     def update(self):
         self.check_collision_player()
         self.apply_collision_player()
-        self.check_collision_head() 
+        self.check_collision_head()
         self.apply_collision_head()
         self.jump_collision()
 
@@ -166,11 +166,6 @@ class Porte(pg.sprite.Sprite):
         self.h = 100
         self.scene = Scene
 
-        self.highscore_lvl0 = highscore_lvl0
-        self.highscore_lvl1 = highscore_lvl1
-        self.highscore_lvl2 = highscore_lvl2
-        self.highscore_lvl3 = highscore_lvl3
-
         self.image = pg.Surface((self.w,self.h))
         self.image.fill(BLUE)
         self.rect = self.image.get_rect()
@@ -181,14 +176,7 @@ class Porte(pg.sprite.Sprite):
         hit = pg.sprite.spritecollide(self, self.game.player_sprite,False)
         self.score = 5000 - self.game.compteur_score
         if pg.sprite.spritecollide(self, self.game.player_sprite,False):
-            if self.game.scene.currentLevel == 0 and self.score > self.highscore_lvl0:
-                self.highscore_lvl0 = (self.score)
-            if self.game.scene.currentLevel == 1 and self.score > self.highscore_lvl1:
-                self.highscore_lvl1 = (self.score)
-            if self.game.scene.currentLevel == 2 and self.score > self.highscore_lvl2:
-                self.highscore_lvl2 = (self.score)
-            if self.game.scene.currentLevel == 3 and self.score > self.highscore_lvl3:
-                self.highscore_lvl3 = (self.score)
+
             self.scene.currentLevel += 1
 
             print(self.scene.currentLevel)
@@ -268,7 +256,7 @@ class Button(pg.sprite.Sprite):
          #variable des boutons activés ou non
          self.btn_1_active = False
          self.btn_2_active = False
-
+         self.btn_7_active = False
 
     def update(self):
         if self.activated:
@@ -320,6 +308,11 @@ class Button(pg.sprite.Sprite):
             if self.channel == "button_6" and self.activated:
                 self.channel_button_6()
 
+            if self.channel == "button_7" and self.activated:
+                self.channel_button_7()
+
+            if self.channel == "button_8" and self.activated:
+                self.channel_button_8()
     #actions des boutons
 
     def channel_button_1(self):
@@ -374,9 +367,10 @@ class Button(pg.sprite.Sprite):
         self.game.platforms_sprite.add(self.game.wall_button_4)
 
     def channel_button_7(self):
-        self.platform_button_7 = sprites.Ground(510, 600, 240, 30, self)
+        self.btn_7_active = True
+        '''self.platform_button_7 = sprites.Ground(510, 600, 240, 30, self)
         self.game.platforms_sprite.add(self.platform_button_7)
-        self.game.all_sprites.add(self.platform_button_7)
+        self.game.all_sprites.add(self.platform_button_7)'''
 
     def channel_button_8(self):
         self.game.all_sprites.remove(self.game.wall_button_5)
