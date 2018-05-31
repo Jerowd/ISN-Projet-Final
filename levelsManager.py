@@ -211,7 +211,7 @@ class Lvl4:
                         ]
 
         for g in self.grounds:
-            self.ground = sprites.Ground(g[0], g[1], g[2], g[3], self)
+            self.ground = sprites.Ground(g[0], g[1], g[2], g[3], g[4])
             self.all_sprites.add(self.ground)
             self.platforms_sprite.add(self.ground)
 
@@ -261,4 +261,73 @@ class Lvl4:
             self.all_sprites.add(self.button)
             self.platforms_sprite.add(self.button)
 
-        print(niv_atteints)
+class Lvl5:
+    def start(self):
+
+        if not "lvl5" in niv_atteints:
+            niv_atteints.append("lvl5")
+
+
+
+        #position du joueur
+        self.player.pos = vec(20, 680)
+
+        #sols
+        self.grounds = [(30,30, 120, 160, self),
+                        (70 , 270, 80, 320, self),
+                        (270, 270, 40, 420, self),
+                        (390, 270, 40, 200, self),
+                        (390, 550, 40, 200, self),
+                        (510, 30, 40, 180, self),
+                        (750, 150, 40, 550, self),
+                        (910, 150, 40, 470, self),
+                        (310, 370, 20, 20, self),
+                        (310, 530, 20, 20, self),
+                        (370, 450, 20, 20, self),
+                        (370, 630, 20, 20, self),
+                        (370, 270, 20, 20, self),
+                        (790, 250, 20, 20, self),
+                        (790, 370, 20, 20, self),
+                        (790, 510, 20, 20, self),
+                        (790, 670, 20, 20, self),
+                        (890, 270, 40, 20, self),
+                        (890, 430, 40, 20, self),
+                        (890, 600, 40, 20, self),]
+
+        self.wall_button_5 = sprites.Ground(30, 270, 40, 320, self)
+        self.all_sprites.add(self.wall_button_5)
+        self.platforms_sprite.add(self.wall_button_5)
+
+        for g in self.grounds:
+            self.ground = sprites.Ground(g[0], g[1], g[2], g[3], self)
+            self.all_sprites.add(self.ground)
+            self.platforms_sprite.add(self.ground)
+
+        self.falling_traps_l = [(150,-180, 120, 200, 490 , self),
+                                (1000, -180, 120, 200, 490, self)]
+
+        for f in self.falling_traps_l:
+            self.falling_traps = sprites.Falling_traps(f[0], f[1], f[2], f[3], f[4] ,self)
+            self.all_sprites.add(self.falling_traps)
+            self.platforms_sprite.add(self.falling_traps)
+
+        self.spikes = [(510 , 670, 240, 20, self),
+                       ]
+
+        for s in self.spikes:
+            self.spike = sprites.Spikes(s[0], s[1], s[2], s[3], self)
+            self.all_sprites.add(self.spike)
+            self.platforms_sprite.add(self.spike)
+
+        #buttons
+        self.buttons = [(550, 70, 20, 40, "button_7", False, self),
+                        (90, 250 , 40, 20, "button_8", False, self)
+                        ]
+
+        for b in self.buttons:
+            self.button = sprites.Button(b[0], b[1], b[2], b[3], b[4], b[5], self)
+            self.all_sprites.add(self.button)
+            self.platforms_sprite.add(self.button)
+
+
+

@@ -2,6 +2,7 @@ import pygame as pg
 from settings import *
 from levelsManager import *
 
+
 class Ground(pg.sprite.Sprite):
     def __init__(self, x, y, w, h, game):
         pg.sprite.Sprite.__init__(self)
@@ -10,7 +11,7 @@ class Ground(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-        self.timer = 10
+
        
 
         self.collision_player = [False] * 9
@@ -29,9 +30,11 @@ class Ground(pg.sprite.Sprite):
         self.collision_player[7] = self.rect.collidepoint(self.game.player_col.rect.midbottom)
         self.collision_player[8] = self.rect.collidepoint(self.game.player_col.rect.center)
 
+        
+
 
     def apply_collision_player(self):
-        if self.collision_player[7]:
+        if self.collision_player[7] and self.game.player.jumping == False:
             self.game.player.rect.bottom = self.rect.top
             self.game.player.pos = self.game.player.rect.midbottom
             self.game.player.vel.y = 0
@@ -67,8 +70,8 @@ class Ground(pg.sprite.Sprite):
 
     def apply_collision_head(self):
         if self.collision_head[7] and self.game.head.apply_col:
-            self.game.head.rect.bottom = self.head.top
-            self.game.head.pos = self.game.player.head.midbottom
+            self.game.head.pos = (self.game.head.rect.center[0], self.rect.top)
+            self.game.head.rect.bottom = self.rect.top
             self.game.head.vel.y = 0
 
         if self.collision_head[5]:
@@ -85,13 +88,8 @@ class Ground(pg.sprite.Sprite):
             self.game.head.vel.y = 0
 
     def jump_collision(self):
-        self.timer -= 1
-        if self.timer < 0:
-            self.timer = 10
-        if self.collision_player[7]:
-            self.game.player.canJump = True
-        if self.game.player.canJump and self.timer < 2:
-            self.game.player.canJump = False
+        if self.game.player.jumping == True and self.collision_player[7] == False:
+            self.game.player.jumping = False
 
         
         
@@ -267,6 +265,10 @@ class Button(pg.sprite.Sprite):
          self.game = game
          self.compteur = 0
 
+         #variable des boutons activés ou non
+         self.btn_1_active = False
+         self.btn_2_active = False
+
 
     def update(self):
         if self.activated:
@@ -321,17 +323,23 @@ class Button(pg.sprite.Sprite):
     #actions des boutons
 
     def channel_button_1(self):
+        self.btn_1_active = True
+        """
         self.platform_button_1 = Ground(820, 160, 120, 20, self)
         self.game.platforms_sprite.add(self.platform_button_1)
         self.game.all_sprites.add(self.platform_button_1)
+        """
 
     def channel_button_2(self):
+        self.btn_2_active = True
+        """
         self.platform_button_2 = Ground(100, 280, 80, 450, self)
         self.game.platforms_sprite.add(self.platform_button_2)
         self.game.all_sprites.add(self.platform_button_2)
         self.platform_button_3 = Ground(180, 400, 80, 330, self)
         self.game.platforms_sprite.add(self.platform_button_3)
         self.game.all_sprites.add(self.platform_button_3)
+        """
 
     def channel_button_3(self):
         self.game.all_sprites.remove(self.game.wall_button_1)
@@ -364,3 +372,12 @@ class Button(pg.sprite.Sprite):
     def channel_button_6_undo(self):
         self.game.all_sprites.add(self.game.wall_button_4)
         self.game.platforms_sprite.add(self.game.wall_button_4)
+
+    def channel_button_7(self):
+        self.platform_button_7 = sprites.Ground(510, 600, 240, 30, self)
+        self.game.platforms_sprite.add(self.platform_button_7)
+        self.game.all_sprites.add(self.platform_button_7)
+
+    def channel_button_8(self):
+        self.game.all_sprites.remove(self.game.wall_button_5)
+        self.game.platforms_sprite.remove(self.game.wall_button_5)

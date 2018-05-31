@@ -62,9 +62,12 @@ class Game:
         elif self.scene.currentLevel == 3:
             self.lvl3.start(self)
 
-        
         elif self.scene.currentLevel == 4:
             self.lvl4.start(self)
+
+        elif self.scene.currentLevel == 5:
+            self.lvl5.start(self)
+
         
 
 
@@ -161,10 +164,12 @@ class Game:
         if self.head.canTp:
             self.player.pos = self.head.rect.midtop
             self.player.rect.midbottom = self.head.rect.midtop
-            print("line ok")
             self.head.isOn = True
             self.head.canTp = False 
 
+        #gestion des boutons dans les niveaux
+        if self.scene.currentLevel == 3:
+            self.boutonManager()
 
         self.all_sprites.update()
 
@@ -184,9 +189,24 @@ class Game:
 
 
     def teleport(self):
-        print("téléport")
         self.head.timerIsActive = True
 
+        
+    def boutonManager(self):
+        if self.button.btn_1_active:
+            self.button.btn_1_active = False
+            self.platform_button_1 = Ground(820, 160, 120, 20, self)
+            self.platforms_sprite.add(self.platform_button_1)
+            self.all_sprites.add(self.platform_button_1)
+
+        if self.button.btn_2_active:
+            self.button.btn_2_active = False
+            self.platform_button_2 = Ground(100, 280, 80, 450, self)
+            self.platforms_sprite.add(self.platform_button_2)
+            self.all_sprites.add(self.platform_button_2)
+            self.platform_button_3 = Ground(180, 400, 80, 330, self)
+            self.platforms_sprite.add(self.platform_button_3)
+            self.all_sprites.add(self.platform_button_3)
 
 
 

@@ -12,11 +12,13 @@ class Player(pg.sprite.Sprite):
         self.image = pg.Surface((self.w,self.h))
         self.image.fill(BLACK)
         self.rect = self.image.get_rect()
-        self.rect.center = (1230, 100)
-        self.pos = vec(1230, 100)
+        self.rect.center = (1200, 100)
+        self.pos = vec(1200, 100) 
         self.vel = vec(0,0)
         self.acc = vec(0,0)
         self.canJump = False
+        self.jumping = False
+        self.timer = JUMP_TIMER
 
         
     def move(self):
@@ -38,24 +40,23 @@ class Player(pg.sprite.Sprite):
         if keys[pg.K_d]:
             self.acc.x = PLAYER_ACC 
 
-        if keys[pg.K_SPACE]:
+        if keys[pg.K_SPACE] and self.canJump:
             self.jump()
 
+        self.jumpTimer()
         self.move()
-        self.bounderies()
-
-
-    def bounderies(self):
-
-        if self.rect.y > HEIGHT:
-            print("bounderies")
-            self.pos = (self.rect.x, 1200)
-            self.rect.y = 1200
-
     
+    def jumpTimer(self):
+        self.timer -= 1
+        if self.timer < 0:
+            self.timer = JUMP_TIMER
+            self.canJump = True
+
+
     def jump(self):
-        if self.canJump:
-            self.vel.y = -PLAYER_JUMP
+        self.canJump = False
+        self.jumping = True #permet au joueur de sauter car il reste bloquer par la collision sinon
+        self.vel.y = -PLAYER_JUMP
 
 
 class Player_collision(pg.sprite.Sprite):
@@ -69,7 +70,7 @@ class Player_collision(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
 
     def update(self):
-        self.rect.midbottom = self.game.player.pos
+        self.rect.center = self.game.player.rect.center
 
 class Head_collision(pg.sprite.Sprite):
     def __init__(self,game):
@@ -81,7 +82,7 @@ class Head_collision(pg.sprite.Sprite):
         self.image.set_alpha(0)
         self.rect = self.image.get_rect()
     def update(self):
-        self.rect.midbottom = self.game.head.pos 
+        self.rect.center = self.game.head.rect.center
     
         
 
