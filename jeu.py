@@ -210,7 +210,6 @@ class Game:
     def boutonManager_2(self):
 
         if self.button_7.btn_7_active:
-            print("ZZZZZ")
             self.button_7.btn_7_active = False
             self.platform_button_7 = sprites.Ground(510, 600, 240, 30, self)
             self.platforms_sprite.add(self.platform_button_7)
@@ -243,7 +242,8 @@ class Game:
 
 
     def debug(self):
-        print(self.player.canJump)
+        print(self.player.acc)
+        print("")
 
 class Gameover():
     def __init__(self):

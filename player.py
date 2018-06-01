@@ -37,8 +37,12 @@ class Player(pg.sprite.Sprite):
         if keys[pg.K_a]:
             self.acc.x = -PLAYER_ACC
 
-        if keys[pg.K_d]:
+        elif keys[pg.K_d]:
             self.acc.x = PLAYER_ACC
+        else:
+            self.acc.x = 0
+            self.vel.x = 0
+            print("no acc")
 
         if keys[pg.K_SPACE] and self.canJump:
             self.jump()

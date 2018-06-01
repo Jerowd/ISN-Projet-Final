@@ -67,11 +67,11 @@ class Lvl2:
         self.player.rect.center = (40, 120)
         self.player.pos = vec(40, 120)
 
-        #sols
+        #sols la width des deux petits sols étaient de 12 avant
         self.grounds = [(880,360,60, 360, self),
                         (880, 20, 60, 220, self),
-                        (20, 160, 140, 12, self),
-                        (480, 160, 140 , 12, self),
+                        (20, 160, 140, 50, self),
+                        (480, 160, 140 , 50, self),
                         ]
 
         for g in self.grounds:

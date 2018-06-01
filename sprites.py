@@ -73,7 +73,7 @@ class Ground(pg.sprite.Sprite):
             self.game.head.pos = (self.game.head.rect.center[0], self.rect.top)
             self.game.head.rect.bottom = self.rect.top
             self.game.head.vel.y = 0
-
+            self.game.head.vel.x = 0
         if self.collision_head[5]:
             self.game.head.rect.right = self.rect.left
             self.game.head.vel.x = 0
