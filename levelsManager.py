@@ -4,7 +4,7 @@ import sprites
 vec = pg.math.Vector2
 
 class Scene():
-    currentLevel = 6
+    currentLevel = 1
 
 
     #fonctions qui spawn les murs de base

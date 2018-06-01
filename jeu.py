@@ -134,7 +134,7 @@ class Game:
         #teleportation du corps sur la tete
         elif keys[pg.K_q] and self.head.isOn == False:
             self.head.apply_col = False
-            self.player.jump()
+            #self.player.jump()
             self.teleport()
             self.head.press = False
 
@@ -243,7 +243,7 @@ class Game:
 
 
     def debug(self):
-        pass
+        print(self.player.canJump)
 
 class Gameover():
     def __init__(self):

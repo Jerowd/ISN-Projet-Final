@@ -16,8 +16,8 @@ class Player(pg.sprite.Sprite):
         self.pos = vec(-20, -20) 
         self.vel = vec(0,0)
         self.acc = vec(0,0)
-        self.canJump = False
         self.jumping = False
+        self.canJump = False 
         self.timer = JUMP_TIMER
 
 
@@ -43,18 +43,9 @@ class Player(pg.sprite.Sprite):
         if keys[pg.K_SPACE] and self.canJump:
             self.jump()
 
-        self.jumpTimer()
         self.move()
 
-    def jumpTimer(self):
-        self.timer -= 1
-        if self.timer < 0:
-            self.timer = JUMP_TIMER
-            self.canJump = True
-
-
     def jump(self):
-        self.canJump = False
         self.jumping = True #permet au joueur de sauter car il reste bloquer par la collision sinon
         self.vel.y = -PLAYER_JUMP
 
@@ -71,6 +62,11 @@ class Player_collision(pg.sprite.Sprite):
 
     def update(self):
         self.rect.center = self.game.player.rect.center
+
+        if pg.sprite.spritecollide(self, self.game.platforms_sprite, False):
+            self.game.player.canJump = True
+        else:
+            self.game.player.canJump = False
 
 class Head_collision(pg.sprite.Sprite):
     def __init__(self,game):

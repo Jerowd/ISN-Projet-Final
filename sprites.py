@@ -91,9 +91,7 @@ class Ground(pg.sprite.Sprite):
         if self.game.player.jumping == True and self.collision_player[7] == False:
             self.game.player.jumping = False
 
-
-
-
+    
 
     def update(self):
         self.check_collision_player()
