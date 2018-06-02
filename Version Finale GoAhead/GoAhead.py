@@ -212,9 +212,9 @@ class Niveau():
             screen.blit(TXT_24, POS_TXT_24)
             screen.blit(TXT_25, POS_TXT_25)
             screen.blit(TXT_26, POS_TXT_26)
-            screen.blit(TXT_27, POS_TXT_27)
+            screen.blit(TXT_27, POS_TXT_29)
             screen.blit(TXT_28, POS_TXT_28)
-            screen.blit(TXT_29, POS_TXT_29)
+            screen.blit(TXT_29, POS_TXT_27)
 
             pg.draw.rect(screen, WHITE, POS_RECT_5)
             screen.blit(TXT_6, POS_TXT_5)
