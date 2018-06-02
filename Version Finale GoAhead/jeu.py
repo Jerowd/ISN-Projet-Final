@@ -92,8 +92,8 @@ class Game:
             self.draw()
 
     def update(self):
-        
-        #self.actual_score +=1
+
+        self.actual_score +=1
 
         #Txt_Score*
         if 2000 - self.actual_score >= 0:
@@ -338,7 +338,7 @@ class Outro():
             screen.blit(image_corps, (self.x_perso,600))
             pg.draw.rect(screen, WHITE, (0,650, 1280, 90))
 
-            if self.x_perso <= 0:
+            if self.x_perso <= 640:
                 screen.blit(TXT_23, POS_TXT_23)
 
             pg.display.flip()

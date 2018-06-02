@@ -152,7 +152,7 @@ POS_TXT_18 = TXT_18.get_rect()
 POS_TXT_18.centerx = 640
 POS_TXT_18.centery = 200
 
-TXT_19 = POLICE_TXT_4.render("*Q* pour aller a gauche et *D* pour aller a gauche",True, WHITE)
+TXT_19 = POLICE_TXT_4.render("*Q* pour aller a gauche et *D* pour aller a droite",True, WHITE)
 POS_TXT_19 = TXT_19.get_rect()
 POS_TXT_19.centerx = 640
 POS_TXT_19.centery = 250
@@ -210,7 +210,7 @@ POS_TXT_12 = TXT_12.get_rect()
 POS_TXT_12.centerx = 640
 POS_TXT_12.centery = 250
 
-TXT_13 = POLICE_TXT_4.render("Que vous on t'il fait ?", False, WHITE)
+TXT_13 = POLICE_TXT_4.render("Que vous ont ils fait ?", False, WHITE)
 POS_TXT_13 = TXT_13.get_rect()
 POS_TXT_13.centerx = 640
 POS_TXT_13.centery = 300
