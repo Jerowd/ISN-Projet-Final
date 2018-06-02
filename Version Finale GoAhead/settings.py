@@ -177,7 +177,39 @@ TXT_23 = POLICE_TXT_3.render("FIN",True, WHITE)
 POS_TXT_23 = TXT_23.get_rect()
 POS_TXT_23.centerx = 640
 POS_TXT_23.centery = 420
+########
 
+#
+#Niveau
+TXT_24 = POLICE_TXT_2.render("1",True, RED)
+POS_TXT_24 = TXT_24.get_rect()
+POS_TXT_24.centerx = 227
+POS_TXT_24.centery = 247
+
+TXT_25 = POLICE_TXT_2.render("2",True, RED)
+POS_TXT_25 = TXT_25.get_rect()
+POS_TXT_25.centerx = 629
+POS_TXT_25.centery = 247
+
+TXT_26 = POLICE_TXT_2.render("3",True, RED)
+POS_TXT_26 = TXT_26.get_rect()
+POS_TXT_26.centerx = 1031
+POS_TXT_26.centery = 247
+
+TXT_27 = POLICE_TXT_2.render("4",True, RED)
+POS_TXT_27 = TXT_27.get_rect()
+POS_TXT_27.centerx = 227
+POS_TXT_27.centery = 482
+
+TXT_28 = POLICE_TXT_2.render("5",True, RED)
+POS_TXT_28 = TXT_28.get_rect()
+POS_TXT_28.centerx = 629
+POS_TXT_28.centery = 482
+
+TXT_29 = POLICE_TXT_2.render("6",True, RED)
+POS_TXT_29 = TXT_29.get_rect()
+POS_TXT_29.centerx = 1031
+POS_TXT_29.centery = 482
 
 #Txt_Mort
 TXT_7 = POLICE_TXT_2.render("REVIVRE",True, BLACK)

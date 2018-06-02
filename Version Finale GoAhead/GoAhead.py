@@ -178,12 +178,43 @@ class Niveau():
             pg.draw.rect(screen, WHITE, POS_RECT_1)
             screen.blit(TXT_1, POS_TXT_1)
 
-            screen.blit(image_LVL1, POS_RECT_10)
-            screen.blit(image_LVL2, POS_RECT_11)
-            screen.blit(image_LVL3, POS_RECT_12)
-            screen.blit(image_LVL4, POS_RECT_13)
-            screen.blit(image_LVL5, POS_RECT_14)
-            screen.blit(image_LVL6, POS_RECT_15)
+            if "lvl1" in niv_atteints:
+                screen.blit(image_LVL1, POS_RECT_10)
+            else:
+                pg.draw.rect(screen, WHITE, POS_RECT_10)
+
+            if "lvl2" in niv_atteints:
+                screen.blit(image_LVL2, POS_RECT_11)
+            else:
+                pg.draw.rect(screen, WHITE, POS_RECT_11)
+
+            if "lvl3" in niv_atteints:
+                screen.blit(image_LVL3, POS_RECT_12)
+            else:
+                pg.draw.rect(screen, WHITE, POS_RECT_12)
+
+            if "lvl4" in niv_atteints:
+                screen.blit(image_LVL4, POS_RECT_13)
+            else:
+                pg.draw.rect(screen, WHITE, POS_RECT_13)
+
+            if "lvl5" in niv_atteints:
+                screen.blit(image_LVL5, POS_RECT_14)
+            else:
+                pg.draw.rect(screen, WHITE, POS_RECT_14)
+
+            if "lvl6" in niv_atteints:
+                screen.blit(image_LVL6, POS_RECT_15)
+            else:
+                pg.draw.rect(screen, WHITE, POS_RECT_15)
+
+
+            screen.blit(TXT_24, POS_TXT_24)
+            screen.blit(TXT_25, POS_TXT_25)
+            screen.blit(TXT_26, POS_TXT_26)
+            screen.blit(TXT_27, POS_TXT_27)
+            screen.blit(TXT_28, POS_TXT_28)
+            screen.blit(TXT_29, POS_TXT_29)
 
             pg.draw.rect(screen, WHITE, POS_RECT_5)
             screen.blit(TXT_6, POS_TXT_5)
