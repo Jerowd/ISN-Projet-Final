@@ -1,51 +1,38 @@
 import sys
 import random
 import pygame as pg
-from jeu import *
-from settings import *
+from jeu import*
+from settings import*
 from pygame.locals import *
+from levelsManager import *
 
-#classe qui gère pluie en fond
-class Whitedrops():
+class Rain():
+
     def __init__(self):
         self.x = random.randint( -10, 1290)
         self.y = random.randint( -745 , -25)
         self.w = 5
         self.h = random.randint( 25, 50)
         self.speed = random.randint( 8, 10)
+        self.color = color
 
-    def draw(self, screen):
-        self.drop = pg.draw.rect( screen, WHITE, ( self.x, self.y, self.w, self.h))
-
-    def impact_sol(self):
-        if self.y > 720 +self.h:
-            self.y = -25
-
-class Reddrops():
-    def __init__(self):
-        self.x = random.randint( -10, 1290)
-        self.y = random.randint( -25 , 710)
-        self.w = 5
-        self.h = random.randint( 25, 50)
-        self.speed = random.randint( 8, 10)
-
-    def draw(self, screen):
-        self.drop = pg.draw.rect( screen, RED, ( self.x, self.y, self.w, self.h))
+    def draw(self, screen, color):
+        self.drop = pg.draw.rect( screen, color, ( self.x, self.y, self.w, self.h))
 
     def impact_sol(self):
         if self.y > 720 +self.h:
             self.y = -25
 
-#classe qui gère l'affichage du menu
 class Menu():
+
     def __init__(self):
         pg.init()
         pg.mixer.init()
         pg.display.set_caption(TITRE)
         self.clock = pg.time.Clock()
 
-    #boucle principale du menu
     def loop(self, screen):
+
         while True:
             delta_t = self.clock.tick( FPS )
 
@@ -55,9 +42,14 @@ class Menu():
 
                 if event.type == MOUSEBUTTONDOWN and event.button == 1:
                     if ZONE_JOUER.collidepoint(event.pos):
-                        Game().new()
+                        niv_atteints.clear()
+                        Intro().loop(screen)
 
                     if ZONE_NIVEAU.collidepoint(event.pos):
+                        if not "lvl0" in niv_atteints:
+                            with open("fichier_sauvegarde.txt", "r") as f:
+                                for line in f:
+                                    niv_atteints.append(line[:4])
                         Niveau().loop(screen)
 
                     if ZONE_OPTION.collidepoint(event.pos):
@@ -65,14 +57,13 @@ class Menu():
                         return
 
                     if ZONE_QUITTER.collidepoint(event.pos):
-                        print('QUITTER')
                         return
 
             screen.fill(BLACK)
 
             #afficher les gouttes
             for i in range(int(len(whitedrops))):
-                whitedrops[i].draw(screen)
+                whitedrops[i].draw(screen,WHITE)
                 whitedrops[i].y += whitedrops[i].speed
                 whitedrops[i].impact_sol()
 
@@ -96,12 +87,11 @@ class Menu():
             pg.display.flip()
             pg.display.update()
 
-#classe qui gère les options
 class Option():
+
     def __init__(self):
         self.clock = pg.time.Clock()
 
-    #creer les gouttes
     def loop(self, screen):
 
         clickable_area = pg.Rect((600, 530), (80, 20))
@@ -131,11 +121,7 @@ class Option():
 
                             Mouse_x, Mouse_y = pg.mouse.get_pos()
                             x_cube = Mouse_x - 40
-                            volume = (Mouse_x -370)/ 500
-
-                            if volume < 0:
-                                volume = 0
-
+                            volume = (Mouse_x -380)/ 500
                             MUSIC.set_volume(volume)
 
                             clickable_area = pg.Rect((x_cube, y_cube), (80, 20))
@@ -143,13 +129,6 @@ class Option():
                             rect_screen.fill(WHITE)
 
             screen.fill(BLACK)
-
-            #afficher les gouttes
-            for i in range(int(len(whitedrops))):
-                whitedrops[i].draw(screen)
-                whitedrops[i].y += whitedrops[i].speed
-                whitedrops[i].impact_sol()
-
             pg.draw.rect(screen, BLACK, (345, 525, 590, 30))
 
             pg.draw.rect(screen, WHITE, POS_CADRE_1)
@@ -163,73 +142,133 @@ class Option():
             pg.draw.rect(screen, WHITE, POS_RECT_1)
             screen.blit(TXT_1, POS_TXT_1)
 
+            screen.blit(TXT_18, POS_TXT_18)
+            screen.blit(TXT_19, POS_TXT_19)
+            screen.blit(TXT_20, POS_TXT_20)
+            screen.blit(TXT_21, POS_TXT_21)
+            screen.blit(TXT_22, POS_TXT_22)
+
             pg.draw.rect(screen, WHITE, POS_RECT_5)
-            screen.blit(TXT_6, POS_TXT_5)
+            screen.blit(TXT_6, POS_TXT_6)
 
             pg.display.flip()
             pg.display.update()
 
-#classe qui gère l'écran de mort
-class Gameover():
+class Niveau():
+
     def __init__(self):
         pg.init()
         pg.mixer.init()
         pg.display.set_caption(TITRE)
         self.clock = pg.time.Clock()
+        self.scene = Scene
 
-    #boucle principale du menu
     def loop(self, screen):
         while True:
-            self.delta_t = self.clock.tick( FPS )
+            delta_t = self.clock.tick( FPS )
+
+            screen.fill(BLACK)
+
+            for i in range(int(len(whitedrops))):
+                whitedrops[i].draw(screen, WHITE)
+                whitedrops[i].y += whitedrops[i].speed
+                whitedrops[i].impact_sol()
+
+            pg.draw.rect(screen, BLACK, (0,0, 1280, 23))
+            pg.draw.rect(screen, WHITE, POS_RECT_1)
+            screen.blit(TXT_1, POS_TXT_1)
+
+            if "lvl1" in niv_atteints:
+                screen.blit(image_LVL1, POS_RECT_10)
+            else:
+                pg.draw.rect(screen, WHITE, POS_RECT_10)
+
+            if "lvl2" in niv_atteints:
+                screen.blit(image_LVL2, POS_RECT_11)
+            else:
+                pg.draw.rect(screen, WHITE, POS_RECT_11)
+
+            if "lvl3" in niv_atteints:
+                screen.blit(image_LVL3, POS_RECT_12)
+            else:
+                pg.draw.rect(screen, WHITE, POS_RECT_12)
+
+            if "lvl4" in niv_atteints:
+                screen.blit(image_LVL4, POS_RECT_13)
+            else:
+                pg.draw.rect(screen, WHITE, POS_RECT_13)
+
+            if "lvl5" in niv_atteints:
+                screen.blit(image_LVL5, POS_RECT_14)
+            else:
+                pg.draw.rect(screen, WHITE, POS_RECT_14)
+
+            if "lvl6" in niv_atteints:
+                screen.blit(image_LVL6, POS_RECT_15)
+            else:
+                pg.draw.rect(screen, WHITE, POS_RECT_15)
+
+
+            screen.blit(TXT_24, POS_TXT_24)
+            screen.blit(TXT_25, POS_TXT_25)
+            screen.blit(TXT_26, POS_TXT_26)
+            screen.blit(TXT_27, POS_TXT_29)
+            screen.blit(TXT_28, POS_TXT_28)
+            screen.blit(TXT_29, POS_TXT_27)
+
+            pg.draw.rect(screen, WHITE, POS_RECT_5)
+            screen.blit(TXT_6, POS_TXT_5)
 
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     return
 
                 if event.type == MOUSEBUTTONDOWN and event.button == 1:
-                    if ZONE_JOUER.collidepoint(event.pos):
+                    if ZONE_QUITTER.collidepoint(event.pos):
+                        return
+
+                if event.type == MOUSEBUTTONDOWN and event.button == 1:
+                    if ZONE_LVL1.collidepoint(event.pos) and "lvl1" in niv_atteints:
+                        self.scene.currentLevel = 1
                         Game().new()
 
-                    if ZONE_QUITTER.collidepoint(event.pos):
-                        print('QUITTER')
-                        return
-            screen.fill(BLACK)
+                if event.type == MOUSEBUTTONDOWN and event.button == 1:
+                    if ZONE_LVL2.collidepoint(event.pos) and "lvl2" in niv_atteints:
+                        self.scene.currentLevel = 2
+                        Game().new()
 
-            #afficher les gouttes
-            for i in range(int(len(reddrops))):
-                reddrops[i].draw(screen)
-                reddrops[i].y += reddrops[i].speed
-                reddrops[i].impact_sol()
+                if event.type == MOUSEBUTTONDOWN and event.button == 1:
+                    if ZONE_LVL3.collidepoint(event.pos) and "lvl3" in niv_atteints:
+                        self.scene.currentLevel = 3
+                        Game().new()
 
-            #afficher les rectangles blancs et les textes
-            pg.draw.rect(screen, BLACK, (0,0, 1280, 23))
-            pg.draw.rect(screen, RED, POS_RECT_1)
-            screen.blit(TXT_1, POS_TXT_1)
+                if event.type == MOUSEBUTTONDOWN and event.button == 1:
+                    if ZONE_LVL4.collidepoint(event.pos) and "lvl4" in niv_atteints:
+                        self.scene.currentLevel = 4
+                        Game().new()
 
-            pg.draw.rect(screen, RED, POS_RECT_2)
-            screen.blit(TXT_7, POS_TXT_7)
 
-            pg.draw.rect(screen, RED, POS_RECT_5)
-            screen.blit(TXT_8, POS_TXT_8)
+                if event.type == MOUSEBUTTONDOWN and event.button == 1:
+                    if ZONE_LVL5.collidepoint(event.pos) and "lvl5" in niv_atteints:
+                        self.scene.currentLevel = 5
+                        Game().new()
 
-            screen.blit(TXT_9, POS_TXT_9)
+                if event.type == MOUSEBUTTONDOWN and event.button == 1:
+                    if ZONE_LVL6.collidepoint(event.pos) and "lvl6" in niv_atteints:
+                        self.scene.currentLevel = 6
+                        Game().new()
 
             pg.display.flip()
             pg.display.update()
 
+class Intro():
 
-
- #GoAhead.Gameover().loop(screen)
-
-#classe qui gère le choix des niveaux
-class Niveau():
     def __init__(self):
         pg.init()
         pg.mixer.init()
         pg.display.set_caption(TITRE)
         self.clock = pg.time.Clock()
 
-    #boucle principale du menu
     def loop(self, screen):
         while True:
             delta_t = self.clock.tick( FPS )
@@ -240,36 +279,28 @@ class Niveau():
 
                 if event.type == MOUSEBUTTONDOWN and event.button == 1:
                     if ZONE_QUITTER.collidepoint(event.pos):
-                        print('QUITTER')
-                        return
+                        Game().new()
 
             screen.fill(BLACK)
-
-            #afficher les gouttes
-            for i in range(int(len(whitedrops))):
-                whitedrops[i].draw(screen)
-                whitedrops[i].y += whitedrops[i].speed
-                whitedrops[i].impact_sol()
-
-            #afficher les rectangles blancs et les textes
             pg.draw.rect(screen, BLACK, (0,0, 1280, 23))
             pg.draw.rect(screen, WHITE, POS_RECT_1)
             screen.blit(TXT_1, POS_TXT_1)
 
             pg.draw.rect(screen, WHITE, POS_RECT_5)
-            screen.blit(TXT_6, POS_TXT_5)
+            screen.blit(TXT_10, POS_TXT_10)
+            screen.blit(TXT_11, POS_TXT_11)
+            screen.blit(TXT_12, POS_TXT_12)
+            screen.blit(TXT_13, POS_TXT_13)
+            screen.blit(TXT_14, POS_TXT_14)
+            screen.blit(TXT_15, POS_TXT_15)
+            screen.blit(TXT_16, POS_TXT_16)
+            screen.blit(TXT_17, POS_TXT_17)
 
             pg.display.flip()
             pg.display.update()
 
-################### CORE
-
-#creer les gouttes
 for i in range(NBGOUTTES):
-            whitedrops.append(Whitedrops())
-
-for i in range(NBGOUTTES):
-            reddrops.append(Reddrops())
+            whitedrops.append(Rain())
 
 MUSIC.play(loops=-1, fade_ms=5000)
 MUSIC.set_volume(0.5)
